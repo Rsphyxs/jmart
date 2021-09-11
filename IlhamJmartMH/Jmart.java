@@ -4,14 +4,23 @@ public class Jmart
 {
     public static void main(String args[])
     {
+        System.out.println("Jmart - Muhammad Ilham M S - 1906300813 - Modul 1 ");
         System.out.println("getPromo : " + getPromo());
+        System.out.println("getCustomer : " + getCustomer());
+        System.out.println("getDiscountPercentage : " + getDiscountPercentage(1000, 900));
+        System.out.println("getDiscountedPrice : " + getDiscountPrice(1000,10.0f));
+        System.out.println("getOriginalPrice : " + getOriginalPrice(900, 10.0f));
+        System.out.println("getComissionMultiplier : " + getComissionMultiplier());
+        System.out.println("getAdjustedPrice : " + getAdjustedPrice(1000));
+        System.out.println("getAdminFee : " + getAdminFee(1000));
     }
+    
 
     public static int getPromo(){
         return 0;
     }
     
-    public static String getCostumer(){
+    public static String getCustomer(){
         return "oop";
     }
     
