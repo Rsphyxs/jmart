@@ -3,5 +3,8 @@ comment0.target=Jmart
 comment1.params=args
 comment1.target=void\ main(java.lang.String[])
 comment2.params=
-comment2.target=Product\ create()
-numComments=3
+comment2.target=Coupon\ createCoupun()
+comment2.text=public\ static\ Product\ create(){\r\n\ \ \ \ \ \ \ \ PriceTag\ priceTag\ \=\ new\ PriceTag(15000000);\r\n\ \ \ \ \ \ \ \ Product\ product\ \=\ new\ Product("MSI\ Prestige\ 14",12,false,priceTag,\r\n\ \ \ \ \ \ \ \ ProductCategory.GAMING);\r\n\ \ \ \ \ \ \ \ return\ product;\r\n}
+comment3.params=args
+comment3.target=ShipmentDuration\ createShipmentDuration(java.lang.String[])
+numComments=4

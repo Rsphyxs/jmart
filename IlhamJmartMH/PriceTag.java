@@ -19,7 +19,7 @@ public class PriceTag
         this.discount = discount;
     }
 
-    public double getAdjusedtPrice(){
+    public double getAdjustedPrice(){
         return getDiscountedPrice()+getAdminFee();
     }
     
