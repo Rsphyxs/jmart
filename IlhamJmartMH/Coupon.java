@@ -2,9 +2,8 @@ package IlhamJmartMH;
 
 
 
-public class Coupon
+public class Coupon extends Recognizable implements FileParser
 {
-    // instance variables - replace the example below with your own
     public final String name;
     public final int code;
     public final double cut;
@@ -17,8 +16,9 @@ public class Coupon
     DISCOUNT, REBATE;
 }
     
-    public Coupon(String name, int code, Type type, double cut, double minimum)
+    public Coupon(int id, String name, int code, Type type, double cut, double minimum)
     {
+        super(id);
         this.name = name;
         this.code = code;
         this.type = type;
@@ -49,5 +49,17 @@ public class Coupon
         else{//type == REBATE
             return priceTag.getAdjustedPrice() - priceTag.price;
         }
+    }
+    
+    public boolean read(String content){
+        return false;
+    }
+    
+    public Object write(){
+        return null;
+    }
+    
+    public static Object newInstance(String content){
+        return null;
     }
 }

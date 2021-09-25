@@ -3,9 +3,6 @@ comment0.target=Jmart
 comment1.params=args
 comment1.target=void\ main(java.lang.String[])
 comment2.params=
-comment2.target=Product\ createProduct()
-comment3.params=
-comment3.target=Coupon\ createCoupon()
-comment4.params=
-comment4.target=ShipmentDuration\ createShipmentDuration()
-numComments=5
+comment2.target=ShipmentDuration\ createShipmentDuration()
+comment2.text=\r\n\ \ \ \ public\ static\ Product\ createProduct(){\r\n\ \ \ \ \ \ \ \ PriceTag\ priceTag\ \=\ new\ PriceTag(15000000);\r\n\ \ \ \ \ \ \ \ Product\ product\ \=\ new\ Product("MSI\ Prestige\ 14",\ 5,\ false,\ priceTag,\ ProductCategory.KITCHEN);\r\n\ \ \ \ \ \ \ \ return\ product;\r\n\ \ \ \ }\r\n\ \ \ \ public\ static\ Coupon\ createCoupon()\ {\r\n\ \ \ \ \ \ \ \ return\ new\ Coupon("11-11-11",\ 2122003,\ Coupon.Type.DISCOUNT,\ 42,\ 2100000);\r\n\ \ \ \ }\r\n
+numComments=3
