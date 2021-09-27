@@ -31,4 +31,10 @@ public class Store extends Recognizable implements FileParser
     public static Object newInstance(String content){
         return null;
     }
+    
+    public String toString() {
+        return  "name: " + this.name + 
+                "\naddress: " + this.address + 
+                "\nahoneNumber: " + this.phoneNumber;
+    }
 }

@@ -29,4 +29,10 @@ public class Account extends Recognizable implements FileParser
     {
         return null;
     }
+    
+    public String toString() {
+        return  "name : " + this.name + 
+                "\nemail : " + this.name + 
+                "\npassword : " + this.password;
+    }
 }
