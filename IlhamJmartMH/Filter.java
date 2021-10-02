@@ -19,7 +19,8 @@ public class Filter
     
     public static void filterProductRating(ArrayList<ProductRating>list, 
     double value, boolean less){
-        for (int i=0; i<list.size(); ++i){
+        int i;
+        for (i=0; i<list.size(); ++i){
             final ProductRating j = list.get(i);
             if (less && j.getAverage()<value || !less&&j.getAverage()>= value){
                 list.remove(i);
