@@ -1,14 +1,16 @@
 package IlhamJmartMH;
+import java.util.Date;
+import java.util.Calendar;
 
 public class Complaint extends Recognizable implements FileParser
 {
     public int paymentId;
     public String desc;
-    public String date;
+    public Date date;
     
     public Complaint(int id, String desc){
         super(id);
-        date = "DateALive";
+        this.date = new Date();
         this.desc = desc;
     }
     

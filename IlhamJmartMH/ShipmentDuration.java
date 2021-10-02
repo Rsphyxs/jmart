@@ -2,6 +2,7 @@ package IlhamJmartMH;
 
 public class ShipmentDuration
 {
+    
     /*
     public static ShipmentDuration INSTANT = new ShipmentDuration(1 << 0);
     public static ShipmentDuration SAME_DAY = new ShipmentDuration(1 << 1);

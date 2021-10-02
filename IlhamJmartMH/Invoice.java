@@ -1,12 +1,14 @@
 package IlhamJmartMH;
+import java.util.Date;
+import java.util.Calendar;
 
 public abstract class Invoice extends Recognizable implements FileParser {
-    public String date;
     public int buyerId;
     public int productId;
     public int complaintId;
     public Rating rating;
     public Status status;
+    public Date date;
 
     enum Rating {
         NONE, BAD, NEUTRAL, GOOD
@@ -18,7 +20,7 @@ public abstract class Invoice extends Recognizable implements FileParser {
 
     protected Invoice(int id, int buyerId, int productId) {
         super(id);
-        this.date = "DateALive";
+        this.date = new Date();
         this.buyerId = buyerId;
         this.productId = productId;
         this.rating = Rating.NONE;

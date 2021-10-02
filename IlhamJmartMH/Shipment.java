@@ -1,4 +1,7 @@
 package IlhamJmartMH;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Shipment implements FileParser
 {
@@ -6,6 +9,8 @@ public class Shipment implements FileParser
     public int shipmentCost;
     public Duration duration;
     public String receipt;
+    
+    
 
     static class Duration
     {
@@ -15,9 +20,30 @@ public class Shipment implements FileParser
         public static Duration REGULER = new Duration((byte) (1<<3));
         public static Duration KARGO = new Duration((byte) (1<<4));
         private byte bit;
+        public static final SimpleDateFormat ESTIMATION_FORMAT
+        = new SimpleDateFormat("EEE MMMM dd yyyy");
+        public Date date;
 
         private Duration(byte bit){
             this.bit = bit;
+        }
+        
+        public String getEstimatedArrival(Date reference){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(reference);
+            if (bit == Duration.INSTANT.bit || bit == Duration.SAME_DAY.bit){
+                cal.add(Calendar.DATE, 0);
+            }
+            else if (bit == Duration.NEXT_DAY.bit){
+                cal.add(Calendar.DATE, 1);
+            }
+            else if (bit == Duration.REGULER.bit){
+                cal.add(Calendar.DATE, 2);
+            }
+            else if (bit == Duration.KARGO.bit){
+                cal.add(Calendar.DATE, 5);
+            }
+            return ESTIMATION_FORMAT.format(cal.getTime());
         }
     }
 
@@ -57,4 +83,5 @@ public class Shipment implements FileParser
     public static Object newInstance(String content){
         return null;
     }
+    
 }
