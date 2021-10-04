@@ -8,4 +8,6 @@ comment3.params=
 comment3.target=boolean\ validate()
 comment4.params=
 comment4.target=Transactor\ perform()
-numComments=5
+comment5.params=
+comment5.target=java.lang.String\ toString()
+numComments=6

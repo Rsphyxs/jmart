@@ -10,8 +10,6 @@ public class Shipment implements FileParser
     public Duration duration;
     public String receipt;
     
-    
-
     static class Duration
     {
         public static Duration INSTANT = new Duration((byte) (1<<0));
