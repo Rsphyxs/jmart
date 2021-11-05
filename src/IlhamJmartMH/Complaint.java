@@ -3,7 +3,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-public class Complaint extends Recognizable implements FileParser
+public class Complaint
 {
     public int paymentId;
     public String desc;
@@ -11,22 +11,9 @@ public class Complaint extends Recognizable implements FileParser
     SimpleDateFormat ComplaintFormat
         = new SimpleDateFormat("dd/MM/yyyy");
     
-    public Complaint(int id, String desc){
-        super(id);
+    public Complaint(String desc){
         this.date = new Date();
         this.desc = desc;
-    }
-    
-    public boolean read(String content){
-        return false;
-    }
-    
-    public boolean validate(){
-        return false;
-    }
-    
-    public Transactor perform(){
-        return null;
     }
     
     public String toString() {

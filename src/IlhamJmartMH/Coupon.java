@@ -2,7 +2,7 @@ package IlhamJmartMH;
 
 
 
-public class Coupon extends Recognizable implements FileParser
+public class Coupon
 {
     public final String name;
     public final int code;
@@ -10,15 +10,16 @@ public class Coupon extends Recognizable implements FileParser
     public final Type type;
     public final double minimum;
     private boolean used;
+    public double price = 123.456;
+    public double discount = 50;
     
     public enum Type
 {
     DISCOUNT, REBATE;
 }
     
-    public Coupon(int id, String name, int code, Type type, double cut, double minimum)
+    public Coupon(String name, int code, Type type, double cut, double minimum)
     {
-        super(id);
         this.name = name;
         this.code = code;
         this.type = type;
@@ -32,8 +33,8 @@ public class Coupon extends Recognizable implements FileParser
         return used;
     }
     
-    public boolean canApply(PriceTag priceTag){
-        if(priceTag.getAdjustedPrice() >= minimum && used == false){
+    public boolean canApply(Treasury treasury){
+        if(treasury.getAdjustedPrice(price, discount) >= minimum && used == false){
             return true;
         }
         else{
@@ -41,25 +42,13 @@ public class Coupon extends Recognizable implements FileParser
         }
     }
     
-    public double apply(PriceTag priceTag){
+    public double apply(Treasury treasury){
         used = true;
         if (type == type.DISCOUNT){
-            return (100 - cut) / 100* priceTag.getAdjustedPrice();
+            return (100 - cut) / 100* treasury.getAdjustedPrice(price, discount);
         }
         else{//type == REBATE
-            return priceTag.getAdjustedPrice() - priceTag.price;
+            return treasury.getAdjustedPrice(price, discount) - treasury.price;
         }
-    }
-    
-    public boolean read(String content){
-        return false;
-    }
-    
-    public Object write(){
-        return null;
-    }
-    
-    public static Object newInstance(String content){
-        return null;
     }
 }

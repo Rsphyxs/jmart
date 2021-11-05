@@ -2,7 +2,7 @@ package IlhamJmartMH;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Store extends Recognizable implements FileParser
+public class Store
 {
     public String name;
     public String address;
@@ -10,30 +10,10 @@ public class Store extends Recognizable implements FileParser
     static final String REGEX_NAME = "^\\d{9,12}$";
     static final String REGEX_PHONE = "^[A-Z](?!.*(\\s)\1).{4,20}$";
     
-    public Store(int accountId, String name, String address, String phoneNumber){
-        super(accountId);
+    public Store(String name, String address, String phoneNumber){
         this.name = name;
         this.address= address;
         this.phoneNumber = phoneNumber;
-    }
-    
-    public Store(Account account, String name, String address, String phoneNumber){
-        super(account.id);
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-    }
-    
-    public boolean read(String content){
-        return false;
-    }
-    
-    public Object write(){
-        return null;
-    }
-    
-    public static Object newInstance(String content){
-        return null;
     }
     
     public String toString() {

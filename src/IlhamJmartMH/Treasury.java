@@ -1,6 +1,6 @@
 package IlhamJmartMH;
 
-public class PriceTag
+public class Treasury
 {
     public static final double COMMISSION_MULTIPLIER = 0.05;
     public static final double BOTTOM_PRICE = 20000.0;
@@ -8,34 +8,34 @@ public class PriceTag
     double discount;
     double price;
     
-    public PriceTag(double price)
+    public Treasury(double price)
     {
         this.price = price;
         this.discount = 0.0;
     }
     
-    public PriceTag(double price, double discount){
+    public Treasury(double price, double discount){
         this.price = price;
         this.discount = discount;
     }
 
-    public double getAdjustedPrice(){
-        return getDiscountedPrice()+getAdminFee();
+    public double getAdjustedPrice(double price, double discount){
+        return getDiscountedPrice(price, discount) + getAdminFee(price, discount);
     }
     
-    public double getAdminFee(){
+    public double getAdminFee(double price, double discount){
         double adminFee;
-        if(getDiscountedPrice() <= BOTTOM_PRICE){
+        if(getDiscountedPrice(price, discount) <= BOTTOM_PRICE){
             adminFee = BOTTOM_FEE;
         }
         else{
-            adminFee = getDiscountedPrice() - 
-            (getDiscountedPrice() * COMMISSION_MULTIPLIER);
+            adminFee = getDiscountedPrice(price, discount) -
+            (getDiscountedPrice(price, discount) * COMMISSION_MULTIPLIER);
         }
         return adminFee;
     }
     
-    private double getDiscountedPrice(){
+    private double getDiscountedPrice(double price, double discount){
         if(discount >= 100.0){
             return 0.0;
         }
