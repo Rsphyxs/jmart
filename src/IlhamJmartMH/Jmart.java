@@ -1,26 +1,33 @@
 package IlhamJmartMH;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import  java.util.List;
+import com.google.gson.*;
 
 public class Jmart
 {
-    public static void main(String args[])
-    {
-        System.out.println("NewJmart - Muhammad Ilham M S - 1906300813 - Modul 5 ");
-        
+    class Country{
+        public String name;
+        public int population;
+        public List<String> listOfStates;
     }
-    /*
-    public static Product createProduct(){
-        PriceTag priceTag = new PriceTag(15000000);
-        Product product = new Product("MSI Prestige 14", 5, false, priceTag, ProductCategory.KITCHEN);
-        return product;
+
+    public static void main(String args[]) {
+        String filepath = "/Ilham/UI/Smt5/Oop/Prak/Modul 1/jmart/city.json";
+        Gson gson = new Gson();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filepath));
+            Country input = gson.fromJson(br, Country.class);
+            System.out.println("name: " + input.name);
+            System.out.println("population: " + input.population);
+            System.out.println("states: ");
+            input.listOfStates.forEach(state -> System.out.println(state));
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
-    public static Coupon createCoupon() {
-        return new Coupon("11-11-11", 2122003, Coupon.Type.DISCOUNT, 42, 2100000);
-    }
-    
-    public static ShipmentDuration createShipmentDuration() {
-        return new ShipmentDuration(ShipmentDuration.REGULER, ShipmentDuration.NEXT_DAY);
-    }
-    */ 
-    
 }
+
 
