@@ -1,6 +1,6 @@
 package IlhamJmartMH;
 
-class Product {
+class Product extends Serializable {
     public int accountId;
     public String name;
     public int weight;

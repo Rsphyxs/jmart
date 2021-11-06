@@ -3,7 +3,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-public class Complaint
+public class Complaint extends Serializable
 {
     public int paymentId;
     public String desc;

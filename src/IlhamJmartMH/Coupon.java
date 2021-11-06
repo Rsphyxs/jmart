@@ -2,7 +2,7 @@ package IlhamJmartMH;
 
 
 
-public class Coupon
+public class Coupon extends Serializable
 {
     public final String name;
     public final int code;
