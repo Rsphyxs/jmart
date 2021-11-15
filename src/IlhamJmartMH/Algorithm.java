@@ -488,4 +488,76 @@ public class Algorithm {
         }
         return min;
     }
+
+    public static <T> List<T> paginate(T[] array, int page, int pageSize, Predicate<T> pred){
+        List<T> newList = new ArrayList<>();
+        for(T obj : array)
+        {
+            if(pred.predicate(obj))
+            {
+                newList.add(obj);
+            }
+        }
+        int firstIndex = page * pageSize;
+        int finalIndex = firstIndex + pageSize;
+        List<T> tempList;
+        if(finalIndex > newList.size())
+        {
+            tempList = newList.subList(firstIndex, newList.size());
+        }
+        else
+        {
+            tempList = newList.subList(firstIndex, finalIndex);
+        }
+        return tempList;
+    }
+
+    public static <T> List<T> paginate(Iterable<T> iterable, int page, int pageSize, Predicate<T> pred){
+        List<T> tempList = new ArrayList<>();
+        Iterator<T> iterator = iterable.iterator();
+        while(iterator.hasNext())
+        {
+            T element = iterator.next();
+            if(pred.predicate(element))
+            {
+                tempList.add(element);
+            }
+        }
+        int startIndex = page * pageSize;
+        int endIndex = startIndex + pageSize;
+        List<T> paginatedList;
+        if(endIndex > tempList.size())
+        {
+            paginatedList = tempList.subList(startIndex,tempList.size());
+        }
+        else
+        {
+            paginatedList = tempList.subList(startIndex, endIndex);
+        }
+        return paginatedList;
+    }
+
+    public static <T> List<T> paginate(Iterator<T> iterator, int page, int pageSize, Predicate<T> pred){
+        List<T> tempList = new ArrayList<>();
+        while(iterator.hasNext())
+        {
+            T element = iterator.next();
+            if(pred.predicate(element))
+            {
+                tempList.add(element);
+            }
+        }
+        int startIndex = page * pageSize;
+        int endIndex = startIndex + pageSize;
+        List<T> paginatedList;
+        if(endIndex > tempList.size())
+        {
+            paginatedList = tempList.subList(startIndex, tempList.size());
+        }
+        else
+        {
+            paginatedList = tempList.subList(startIndex, endIndex);
+        }
+        return paginatedList;
+    }
 }

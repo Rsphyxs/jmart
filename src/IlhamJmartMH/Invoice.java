@@ -8,9 +8,7 @@ public abstract class Invoice extends Serializable{
     public int productId;
     public int complaintId;
     public Rating rating;
-    public Status status;
     public Date date;
-    public ArrayList<Record> history = new ArrayList<Record>();
 
     enum Rating {
         NONE, BAD, NEUTRAL, GOOD
@@ -21,18 +19,13 @@ public abstract class Invoice extends Serializable{
     }
 
     protected Invoice(int buyerId, int productId) {
-        this.date = new Date();
+        this.date = Calendar.getInstance().getTime();
         this.buyerId = buyerId;
         this.productId = productId;
         this.rating = Rating.NONE;
-        this.status = Status.WAITING_CONFIRMATION;
+        this.complaintId = -1;
     }
 
-    public abstract double getTotalPay();
-    
-    class Record{
-        public Status status;
-        public Date date;
-        public String message;
-    }
+    public abstract double getTotalPay(Product product);
+
 }
