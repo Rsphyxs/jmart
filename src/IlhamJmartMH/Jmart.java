@@ -166,25 +166,27 @@ public class Jmart {
         return list;
     }
 
-    public static boolean paymentTimekeeper(Payment payment) {
-        Payment.Record record = payment.history.get(payment.history.size() - 1);
-        long elapsed = Math.abs(record.date.getTime() - (new Date()).getTime());
-
-        if(record.status == Invoice.Status.WAITING_CONFIRMATION && elapsed > WAITING_CONF_LIMIT_MS){
-            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Waiting"));
-            return true;
-        }
-        else if(record.status == Invoice.Status.ON_PROGRESS && elapsed > ON_PROGRESS_LIMIT_MS){
-            payment.history.add(new Payment.Record(Invoice.Status.FAILED, "Progress"));
-            return true;
-        }
-        else if(record.status == Invoice.Status.ON_DELIVERY && elapsed > ON_DELIVERY_LIMIT_MS){
-            payment.history.add(new Payment.Record(Invoice.Status.DELIVERED, "Delivery"));
-            return false;
-        }
-        else if(record.status == Invoice.Status.DELIVERED && elapsed > DELIVERED_LIMIT_MS){
-            payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "Finish"));
-            return true;
+    public static boolean paymentTimekeeper(Payment payment){
+        Date timeNow = Calendar.getInstance().getTime();
+        if(payment.history.size() != 0){
+            Payment.Record lastRecord = payment.history.get(payment.history.size() - 1);
+            long timePassed = timeNow.getTime() - lastRecord.date.getTime();
+            if(lastRecord.status == Invoice.Status.WAITING_CONFIRMATION && (timePassed > WAITING_CONF_LIMIT_MS)){
+                payment.history.add(new Payment.Record(Invoice.Status.FAILED, "FAILED"));
+                return true;
+            }
+            else if((lastRecord.status == Invoice.Status.ON_PROGRESS) && (timePassed > ON_PROGRESS_LIMIT_MS)){
+                payment.history.add(new Payment.Record(Invoice.Status.FAILED, "FAILED"));
+                return true;
+            }
+            else if(lastRecord.status == Invoice.Status.ON_DELIVERY && timePassed > ON_DELIVERY_LIMIT_MS){
+                payment.history.add(new Payment.Record(Invoice.Status.DELIVERED, "DELIVERED"));
+                return true;
+            }
+            else if(lastRecord.status == Invoice.Status.DELIVERED && timePassed > DELIVERED_LIMIT_MS){
+                payment.history.add(new Payment.Record(Invoice.Status.FINISHED, "FINISHED"));
+                return true;
+            }
         }
         return false;
     }
