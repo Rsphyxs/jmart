@@ -15,7 +15,7 @@ public abstract class Invoice extends Serializable{
     }
 
     enum Status {
-        WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED
+        WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED, DELIVERED
     }
 
     protected Invoice(int buyerId, int productId) {
