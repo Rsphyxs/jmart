@@ -17,8 +17,8 @@ public class Payment extends Invoice
         this.shipment = shipment;
     }
 
-    public double getTotalPay() {
-        return 0;
+    public double getTotalPay(Product product) {
+        return product.price;
     }
 
     static class Record
