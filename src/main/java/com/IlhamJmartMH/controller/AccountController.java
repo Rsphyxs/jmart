@@ -18,14 +18,17 @@ public class AccountController implements BasicGetController<Account> {
 	public static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?!.* ).{8,}$";
 	public static final Pattern REGEX_PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
 	public static final Pattern REGEX_PATTERN_PASSWORD = Pattern.compile(REGEX_PASSWORD);
+
+	@JsonAutowired(value = Account.class, filepath = "")
 	public static JsonTable<Account> accountTable;
+
 
 	public JsonTable<Account> getJsonTable(){
 		return accountTable;
 	}
 
 	@PostMapping("/login")
-	public Account login(String email,String password){
+	public Account login(@RequestParam String email,@RequestParam String password){
 		for(Account account : accountTable){
 			if(account.email.equals(email) && account.password.equals(password)){
 				return account;
@@ -35,7 +38,7 @@ public class AccountController implements BasicGetController<Account> {
 	}
 
 	@PostMapping("/register")
-	Account register(String name, String email, String password) {
+	Account register(@RequestParam String name,@RequestParam String email,@RequestParam String password) {
 		Matcher matcherEmail = REGEX_PATTERN_EMAIL.matcher(email);
 		Matcher matcherPassword = REGEX_PATTERN_PASSWORD.matcher(password);
 
