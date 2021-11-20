@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public class PaymentController {
+public class PaymentController implements BasicGetController<Payment> {
     public static final long DELIVERED_LIMIT_MS = 0;
     public static final long ON_DELIVERY_LIMIT_MS = 0;
     public static final long ON_PROGRESS_LIMIT_MS = 0;
