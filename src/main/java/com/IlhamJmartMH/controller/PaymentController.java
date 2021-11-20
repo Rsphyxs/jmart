@@ -3,6 +3,9 @@ package com.IlhamJmartMH.controller;
 import com.IlhamJmartMH.ObjectPoolThread;
 import com.IlhamJmartMH.Payment;
 import com.IlhamJmartMH.dbjson.JsonTable;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public class PaymentController {
     public static final long DELIVERED_LIMIT_MS = 0;
@@ -12,22 +15,31 @@ public class PaymentController {
     public static JsonTable<Payment> paymentTable = null;
     public static ObjectPoolThread<Payment> poolThread = null;
 
-    public boolean accept(int id){
+    static{
+        poolThread = new ObjectPoolThread<Payment>("Thread", PaymentController::timekeeper);
+        poolThread.start();
+    }
+
+    @PostMapping("/{id}/accept")
+    public boolean accept(@PathVariable int id){
         return true;
     }
 
-    public boolean cancel(int id){
+    @PostMapping("/{id}/cancel")
+    public boolean cancel(@PathVariable int id){
         return true;
     }
 
-    public Payment create(int buyerId, int productId, int productCount, String shipmentAddress, byte shipmentPlan){
+    @PostMapping("/create")
+    public Payment create(@RequestParam int buyerId, @RequestParam int productId, @RequestParam int productCount, @RequestParam String shipmentAddress, @RequestParam byte shipmentPlan){
         return null;
     }
 
     public JsonTable<Payment> getJsonTable(){
-        return null;
+        return paymentTable;
     }
 
+    @PostMapping("/{id}/submit")
     public boolean submit(int id,String receipt){
         return true;
     }
