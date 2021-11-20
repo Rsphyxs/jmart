@@ -7,13 +7,15 @@ public class Store
     public String name;
     public String address;
     public String phoneNumber;
+    public double balance;
     static final String REGEX_NAME = "^\\d{9,12}$";
     static final String REGEX_PHONE = "^[A-Z](?!.*(\\s)\1).{4,20}$";
     
-    public Store(String name, String address, String phoneNumber){
+    public Store(String name, String address, String phoneNumber, double balance){
         this.name = name;
         this.address= address;
         this.phoneNumber = phoneNumber;
+        this.balance = balance;
     }
     
     public String toString() {

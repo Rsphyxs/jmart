@@ -1,6 +1,7 @@
 package com.IlhamJmartMH;
 
 
+import com.IlhamJmartMH.dbjson.Serializable;
 
 public class Coupon extends Serializable
 {

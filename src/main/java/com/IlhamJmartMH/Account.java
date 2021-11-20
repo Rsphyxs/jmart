@@ -1,4 +1,6 @@
 package com.IlhamJmartMH;
+import com.IlhamJmartMH.dbjson.Serializable;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

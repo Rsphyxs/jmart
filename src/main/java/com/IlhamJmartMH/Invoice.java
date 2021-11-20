@@ -1,9 +1,10 @@
 package com.IlhamJmartMH;
+import com.IlhamJmartMH.dbjson.Serializable;
+
 import java.util.Date;
 import java.util.Calendar;
-import java.util.ArrayList;
 
-public abstract class Invoice extends Serializable{
+public abstract class Invoice extends Serializable {
     public int buyerId;
     public int productId;
     public int complaintId;

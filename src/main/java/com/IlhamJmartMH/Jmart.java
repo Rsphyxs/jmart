@@ -1,9 +1,9 @@
 package com.IlhamJmartMH;
 import java.io.*;
-import java.time.Period;
 import java.util.*;
-import java.util.stream.Collectors;
 
+import com.IlhamJmartMH.dbjson.JsonDBEngine;
+import com.IlhamJmartMH.dbjson.JsonTable;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 
@@ -25,7 +25,9 @@ public class Jmart {
     }
 
     public static void main(String args[]) {
+        JsonDBEngine.Run(Jmart.class);
         SpringApplication.run(Jmart.class, args);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> JsonDBEngine.join()) );
 
 //        System.out.println("account id:" + new Account(null, null, null, -1).id);
 //        System.out.println("account id:" + new Account(null, null, null, -1).id);
@@ -61,32 +63,32 @@ public class Jmart {
 //            t.printStackTrace();
 //        }
 
-        try{
-            // sesuaikan argument dibawah dengan lokasi resource file yang Anda unduh di EMAS!
-            JsonTable<Payment> table = new JsonTable<>(Payment.class, "D:\\Ilham\\UI\\Smt5\\Oop\\Prak\\Modul 1\\jmart\\src\\GoldenSample\\randomPaymentList.json");
-            // membuat thread untuk payment pool
-            ObjectPoolThread<Payment>paymentPool =new ObjectPoolThread<Payment>("Thread-pp", Jmart::paymentTimekeeper);
-            // menjalankan thread (ingat menggunakan start bukan run), run melakukan instruksi dalam current thread
-            paymentPool.start();
-            //tambahkan seluruh payment hasil baca ke dalam pool
-            table.forEach(payment ->paymentPool.add(payment));
-            // berikan sinyal untuk keluar dari routine apabila seluruh objek telah di proses
-            while (paymentPool.size() != 0);
-            paymentPool.exit();
-            // tunggu hingga thread selesai di eksekusi
-            while (paymentPool.isAlive());
-            // thread telah berhasil di selesaikan
-            System.out.println("Thread exited successfully");
-            // cek hasil output
-            Gson gson = new Gson();
-            table.forEach(payment -> {
-                String history = gson.toJson(payment.history);
-                System.out.println(history);
-            });
-        }
-        catch (Throwable t){
-            t.printStackTrace();
-        }
+//        try{
+//            // sesuaikan argument dibawah dengan lokasi resource file yang Anda unduh di EMAS!
+//            JsonTable<Payment> table = new JsonTable<>(Payment.class, "D:\\Ilham\\UI\\Smt5\\Oop\\Prak\\Modul 1\\jmart\\src\\GoldenSample\\randomPaymentList.json");
+//            // membuat thread untuk payment pool
+//            ObjectPoolThread<Payment>paymentPool =new ObjectPoolThread<Payment>("Thread-pp", Jmart::paymentTimekeeper);
+//            // menjalankan thread (ingat menggunakan start bukan run), run melakukan instruksi dalam current thread
+//            paymentPool.start();
+//            //tambahkan seluruh payment hasil baca ke dalam pool
+//            table.forEach(payment ->paymentPool.add(payment));
+//            // berikan sinyal untuk keluar dari routine apabila seluruh objek telah di proses
+//            while (paymentPool.size() != 0);
+//            paymentPool.exit();
+//            // tunggu hingga thread selesai di eksekusi
+//            while (paymentPool.isAlive());
+//            // thread telah berhasil di selesaikan
+//            System.out.println("Thread exited successfully");
+//            // cek hasil output
+//            Gson gson = new Gson();
+//            table.forEach(payment -> {
+//                String history = gson.toJson(payment.history);
+//                System.out.println(history);
+//            });
+//        }
+//        catch (Throwable t){
+//            t.printStackTrace();
+//        }
     }
 
     public static List<Product> filterByAccountId(List<Product > list, int accountId, int page, int pageSize){
@@ -196,6 +198,7 @@ public class Jmart {
         }
         return false;
     }
+
 }
 
 
