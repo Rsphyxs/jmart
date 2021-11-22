@@ -34,8 +34,8 @@ public class Coupon extends Serializable
         return used;
     }
     
-    public boolean canApply(Treasury treasury){
-        if(treasury.getAdjustedPrice(price, discount) >= minimum && used == false){
+    public boolean canApply(double price, double discount){
+        if(Treasury.getAdjustedPrice(price, discount) >= minimum && used == false){
             return true;
         }
         else{

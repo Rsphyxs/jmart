@@ -2,7 +2,7 @@ package com.IlhamJmartMH;
 
 import com.IlhamJmartMH.dbjson.Serializable;
 
-class Product extends Serializable {
+public class Product extends Serializable {
     public int accountId;
     public String name;
     public int weight;

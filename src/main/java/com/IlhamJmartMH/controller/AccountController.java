@@ -8,6 +8,9 @@ import com.IlhamJmartMH.dbjson.JsonTable;
 import com.IlhamJmartMH.dbjson.JsonAutowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +33,13 @@ public class AccountController implements BasicGetController<Account> {
 	@PostMapping("/login")
 	public Account login(@RequestParam String email,@RequestParam String password){
 		for(Account account : accountTable){
+			String hash = "";
+			try{
+				hash = MD5enkrip(password);
+			}
+			catch (NoSuchAlgorithmException e){
+				e.printStackTrace();
+			}
 			if(account.email.equals(email) && account.password.equals(password)){
 				return account;
 			}
@@ -50,7 +60,14 @@ public class AccountController implements BasicGetController<Account> {
 		}
 
 		if(!name.isBlank() && matcherEmail.find() && matcherPassword.find() && checker) {
-			Account newAccount = new Account(name, email, password, 0.0);
+			String hash = "";
+			try{
+				hash = MD5enkrip(password);
+			}
+			catch (NoSuchAlgorithmException e){
+				e.printStackTrace();
+			}
+			Account newAccount = new Account(name, email, hash, 0.0);
 			accountTable.add(newAccount);
 			return newAccount;
 		}
@@ -78,6 +95,33 @@ public class AccountController implements BasicGetController<Account> {
 			return true;
 		}
 		return false;
+	}
+
+	public static String MD5enkrip(String input) throws NoSuchAlgorithmException{
+		try {
+			//Memanggil metgod getInstance dengan tipe MD5 untuk mengunakan algoritma MD5
+			MessageDigest method = MessageDigest.getInstance("MD5");
+
+			//Memanggil string input dan mengkalkulasikannya kedalam bentuk array String
+			byte[] messageDigest = method.digest(input.getBytes());
+
+			//Mengubah array menjadi signum
+			BigInteger signum = new BigInteger(1, messageDigest);
+
+			//Mengubah kedalam format heksadesimal
+			String varHash = signum.toString(16);
+
+			//Menambahkan 0 untuk mengisi kekosongan sehingga panjang menjadi 32 bit
+			while (varHash.length() < 32) {
+				varHash = "0" + varHash;
+			}
+			return varHash;
+		}
+
+		//Menspesifikasikan algoritma pesan digest yang salah
+		catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 //	@GetMapping
