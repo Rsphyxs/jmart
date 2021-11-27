@@ -22,7 +22,7 @@ public class AccountController implements BasicGetController<Account> {
 	public static final Pattern REGEX_PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
 	public static final Pattern REGEX_PATTERN_PASSWORD = Pattern.compile(REGEX_PASSWORD);
 
-	@JsonAutowired(value = Account.class, filepath = "")
+	@JsonAutowired(value = Account.class, filepath = "D:\\Ilham\\UI\\Smt5\\Oop\\Prak\\Modul 1\\jmart\\src\\GoldenSample\\account.json")
 	public static JsonTable<Account> accountTable;
 
 
@@ -32,19 +32,19 @@ public class AccountController implements BasicGetController<Account> {
 
 	@PostMapping("/login")
 	public Account login(@RequestParam String email,@RequestParam String password){
-		for(Account account : accountTable){
-			String hash = "";
-			try{
-				hash = MD5enkrip(password);
-			}
-			catch (NoSuchAlgorithmException e){
-				e.printStackTrace();
-			}
-			if(account.email.equals(email) && account.password.equals(password)){
-				return account;
-			}
+		MessageDigest messageDigest = null;
+		try {
+			messageDigest = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 		}
-		return null;
+		byte[] digest = messageDigest.digest(password.getBytes());
+		BigInteger No = new BigInteger(1, digest);
+		String hash = No.toString(16);
+		while (hash.length() < 32) hash = "0" + hash;
+		String finalHash = hash;
+
+		return Algorithm.<Account>find(accountTable, obj -> obj.email.equals(email) && obj.password.equals(finalHash));
 	}
 
 	@PostMapping("/register")
@@ -124,9 +124,9 @@ public class AccountController implements BasicGetController<Account> {
 		}
 	}
 
-//	@GetMapping
-//	String index() { return "account page"; }
-//
+	@GetMapping
+	String index() { return "account page"; }
+
 //	@PostMapping("/register")
 //	Account register
 //			(
