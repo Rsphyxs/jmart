@@ -138,6 +138,6 @@ public class AccountController implements BasicGetController<Account> {
 //		return new Account(name, email, password, 0);
 //	}
 //
-//	@GetMapping("/{id}")
-//	public String getById(@PathVariable int id) { return "account id " + id + " not found!"; }
+	@GetMapping("/{id}")
+	public Account getDataAccount(@PathVariable int id) { return getById(id); }
 }
