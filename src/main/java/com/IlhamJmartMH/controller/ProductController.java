@@ -41,48 +41,64 @@ public class ProductController implements BasicGetController<Product> {
                                      @RequestParam(defaultValue = "0") int minPrice, @RequestParam(defaultValue = "0") int maxPrice, @RequestParam(defaultValue = "") ProductCategory category) {
 
         String searchLowercase = search.toLowerCase();
-        Predicate<Product> predicateAccountId = product -> (product.accountId == accountId);
         Predicate<Product> predicateSearch = product -> product.name.toLowerCase().contains(searchLowercase);
-        return paginateProductListFilteredAll(page, pageSize, predicateAccountId, predicateSearch, minPrice, maxPrice, category);
+        return paginateProductListFilteredAll(page, pageSize, predicateSearch, minPrice, maxPrice, category);
     }
 
-    public List<Product> paginateProductListFilteredAll(int page, int pageSize, Predicate<Product> predAccountId, Predicate<Product> predSearch, int lowestPrice, int highestPrice, ProductCategory category) {
+    public List<Product> paginateProductListFilteredAll(int page, int pageSize, Predicate<Product> predSearch, int minPrice, int maxPrice, ProductCategory category){
         List<Product> newList = new ArrayList<Product>();
-        if (lowestPrice != 0.0 && highestPrice != 0.0) {
-            for (Product product : getJsonTable()) {
-                double productPrice = product.price;
-                if (productPrice > lowestPrice && productPrice < highestPrice && predAccountId.predicate(product) && predSearch.predicate(product) && product.category == category) {
-                    newList.add(product);
+        if(minPrice != 0.0 && maxPrice != 0.0)
+        {
+            for(Product p : getJsonTable())
+            {
+                double productPrice = p.price;
+                if(productPrice > minPrice && productPrice < maxPrice && predSearch.predicate(p) && p.category == category)
+                {
+                    newList.add(p);
                 }
             }
-        } else if (lowestPrice == 0.0 && highestPrice != 0.0) {
-            for (Product product : getJsonTable()) {
-                double productPrice = product.price;
-                if (productPrice < highestPrice && predAccountId.predicate(product) && predSearch.predicate(product) && product.category == category) {
-                    newList.add(product);
+        }
+        else if(minPrice == 0.0 && maxPrice != 0.0)
+        {
+            for(Product p : getJsonTable())
+            {
+                double productPrice = p.price;
+                if(productPrice < maxPrice && predSearch.predicate(p) && p.category == category)
+                {
+                    newList.add(p);
                 }
             }
-        } else if (highestPrice == 0.0 && lowestPrice != 0.0) {
-            for (Product product : getJsonTable()) {
-                double productPrice = product.price;
-                if (productPrice > lowestPrice && predAccountId.predicate(product) && predSearch.predicate(product) && product.category == category) {
-                    newList.add(product);
+        }
+        else if(maxPrice == 0.0 && minPrice != 0.0)
+        {
+            for(Product p : getJsonTable())
+            {
+                double productPrice = p.price;
+                if(productPrice > minPrice && predSearch.predicate(p) && p.category == category)
+                {
+                    newList.add(p);
                 }
             }
-        } else {
-            for (Product product : getJsonTable()) {
-                double productPrice = product.price;
-                if (predAccountId.predicate(product) && predSearch.predicate(product) && product.category == category) {
-                    newList.add(product);
+        }
+        else {
+            for(Product p : getJsonTable())
+            {
+                double productPrice = p.price;
+                if(predSearch.predicate(p) && p.category == category)
+                {
+                    newList.add(p);
                 }
             }
         }
         int startIndex = page * pageSize;
         int endIndex = startIndex + pageSize;
         List<Product> paginatedList;
-        if (endIndex > newList.size()) {
+        if(endIndex > newList.size())
+        {
             paginatedList = newList.subList(startIndex, newList.size());
-        } else {
+        }
+        else
+        {
             paginatedList = newList.subList(startIndex, endIndex);
         }
         return paginatedList;
