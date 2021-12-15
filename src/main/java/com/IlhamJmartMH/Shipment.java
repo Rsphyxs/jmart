@@ -14,6 +14,7 @@ public class Shipment
     public static Plan NEXT_DAY = new Plan((byte) (1<<2));
     public static Plan REGULER = new Plan((byte) (1<<3));
     public static Plan KARGO = new Plan((byte) (1<<4));
+    public int cost;
     public static final SimpleDateFormat ESTIMATION_FORMAT
     = new SimpleDateFormat("EEE MMMM dd yyyy");
     public Date date;

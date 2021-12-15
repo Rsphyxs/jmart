@@ -1,27 +1,41 @@
-package com.IlhamJmartMH;
+package com.IlhamJmartMH.controller;
 
-import com.IlhamJmartMH.controller.AccountController;
-import com.IlhamJmartMH.controller.BasicGetController;
-import com.IlhamJmartMH.controller.ProductController;
+import com.IlhamJmartMH.*;
+import com.IlhamJmartMH.dbjson.JsonAutowired;
 import com.IlhamJmartMH.dbjson.JsonTable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+@RestController
+@RequestMapping("/payment")
 public class PaymentController implements BasicGetController<Payment> {
-    public static final long DELIVERED_LIMIT_MS = 0;
-    public static final long ON_DELIVERY_LIMIT_MS = 0;
-    public static final long ON_PROGRESS_LIMIT_MS = 0;
-    public static final long WAITING_CONF_LIMIT_MS = 0;
-    public static JsonTable<Payment> paymentTable = null;
-    public static ObjectPoolThread<Payment> poolThread = null;
+    @JsonAutowired(value = Payment.class, filepath = "paymentData.json")
+
+    public static JsonTable<Payment> paymentTable;
+    public static ObjectPoolThread<Payment> poolThread;
+
+    public static final long DELIVERED_LIMIT_MS = 10000;
+    public static final long ON_DELIVERY_LIMIT_MS = 10000;
+    public static final long ON_PROGRESS_LIMIT_MS = 10000;
+    public static final long WAITING_CONF_LIMIT_MS = 30000;
 
     static {
         poolThread = new ObjectPoolThread<Payment>("Thread", PaymentController::timekeeper);
         poolThread.start();
+    }
+
+    @GetMapping("/getByAccountId")
+    public ArrayList<Payment> getPaymentByAccountId(@RequestParam int buyerId){
+        ArrayList<Payment> paymentList = new ArrayList<>();
+        for(Payment p : paymentTable){
+            if(p.buyerId == buyerId){
+                paymentList.add(p);
+            }
+        }
+        return paymentList;
     }
 
     @PostMapping("/{id}/accept")
@@ -73,7 +87,7 @@ public class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping("/create")
-    public Payment create(@RequestParam int buyerId, @RequestParam int productId, @RequestParam int productCount, @RequestParam String shipmentAddress, @RequestParam byte shipmentPlan) {
+    public Payment create(@RequestParam int buyerId, @RequestParam int productId, @RequestParam int productCount, @RequestParam String shipmentAddress, @RequestParam byte shipmentPlan,  @RequestParam int storeId) {
         Account account = null;
         Product product = null;
 
@@ -93,7 +107,7 @@ public class PaymentController implements BasicGetController<Payment> {
 
         if (account != null && product != null) {
             Shipment shipment = new Shipment(shipmentAddress, 0, shipmentPlan, null);
-            Payment payment = new Payment(buyerId, productId, productCount, shipment);
+            Payment payment = new Payment(buyerId, productId, productCount, shipment, storeId);
             double price = payment.getTotalPay(product);
 
             if (account.balance >= price) {

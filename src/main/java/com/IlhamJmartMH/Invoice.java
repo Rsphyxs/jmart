@@ -11,11 +11,11 @@ public abstract class Invoice extends Serializable {
     public Rating rating;
     public Date date;
 
-    enum Rating {
+    public enum Rating {
         NONE, BAD, NEUTRAL, GOOD
     }
 
-    enum Status {
+    public enum Status {
         WAITING_CONFIRMATION, CANCELLED, ON_PROGRESS, ON_DELIVERY, COMPLAINT, FINISHED, FAILED, DELIVERED
     }
 

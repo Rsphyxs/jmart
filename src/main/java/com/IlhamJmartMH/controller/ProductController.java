@@ -18,6 +18,9 @@ public class ProductController implements BasicGetController<Product> {
         return productTable;
     }
 
+    @GetMapping("/{id}")
+    Product getProductById(@PathVariable int id) { return getById(id); }
+
     @GetMapping("/{id}/store")
     List<Product> getProductByStore(@PathVariable int id, @RequestParam int page, @RequestParam int pageSize) {
         return Algorithm.<Product>paginate(getJsonTable(), page, pageSize, product -> product.accountId == id);

@@ -8,20 +8,22 @@ public class Payment extends Invoice
 {
     public ArrayList<Record> history = new ArrayList<>();
     public int productCount;
+    public int storeId;
     public Shipment shipment;
 
 
-    public Payment(int buyerId, int productId, int productCount, Shipment shipment){
+    public Payment(int buyerId, int productId, int productCount, Shipment shipment, int storeId){
         super(buyerId, productId);
         this.productCount = productCount;
         this.shipment = shipment;
+        this.storeId =storeId;
     }
 
     public double getTotalPay(Product product) {
-        return product.price;
+        return ((productCount * product.price) + shipment.cost);
     }
 
-    static class Record
+    public static class Record
     {
         public Status status;
         public final Date date;
