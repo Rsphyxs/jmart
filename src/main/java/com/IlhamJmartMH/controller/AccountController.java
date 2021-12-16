@@ -14,6 +14,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class AccountController yang akan mengatur seluruh aktivitas terkait akun
+ * @author Muhammad Ilham M S
+ * @version 16 Desember 2021
+ */
 @RestController
 @RequestMapping("/account")
 public class AccountController implements BasicGetController<Account> {
@@ -25,11 +30,18 @@ public class AccountController implements BasicGetController<Account> {
 	@JsonAutowired(value = Account.class, filepath = "D:\\Ilham\\UI\\Smt5\\Oop\\Prak\\Modul 1\\jmart\\src\\GoldenSample\\account.json")
 	public static JsonTable<Account> accountTable;
 
-
+	/**
+	 * Method getJsonTable yang akan mengembalikan keseluruhan tabel akun
+	 */
 	public JsonTable<Account> getJsonTable(){
 		return accountTable;
 	}
 
+	/**
+	 * Method yang akan melakukan verifikasi terhadap informasi kredensial yang akan dimasukan
+	 * @param email adalah email yang diinput user
+	 * @param password adalah password yang diinput user
+	 */
 	@PostMapping("/login")
 	public Account login(@RequestParam String email,@RequestParam String password){
 		MessageDigest messageDigest = null;
@@ -47,6 +59,12 @@ public class AccountController implements BasicGetController<Account> {
 		return Algorithm.<Account>find(accountTable, obj -> obj.email.equals(email) && obj.password.equals(finalHash));
 	}
 
+	/**
+	 * Method yang akan mendaftarkan akun baru
+	 * @param name adalah nama yang didaftarkan
+	 * @param email adalah email yang didaftarkan
+	 * @param password adalah password yang didaftarkan
+	 */
 	@PostMapping("/register")
 	Account register(@RequestParam String name,@RequestParam String email,@RequestParam String password) {
 		Matcher matcherEmail = REGEX_PATTERN_EMAIL.matcher(email);
@@ -74,6 +92,13 @@ public class AccountController implements BasicGetController<Account> {
 		return null;
 	}
 
+	/**
+	 * Method yang akan mendaftarkan toko baru dari akun terkait
+	 * @param id adalah id dari akun
+	 * @param name adalah nama dari toko
+	 * @param address adalah alamat dari toko
+	 * @param phoneNumber adalah nomor telepon dari toko
+	 */
 	@PostMapping("/{id}/registerStore")
 	Store registerStore(@PathVariable int id, @RequestParam String name, @RequestParam String address, @RequestParam String phoneNumber)
 	{
@@ -86,6 +111,11 @@ public class AccountController implements BasicGetController<Account> {
 		return a.store;
 	}
 
+	/**
+	 * Method yang akan menambahkan balance dari user
+	 * @param id adalah id dari akun
+	 * @param balance adalah jumlah balance yang akan ditambahkan
+	 */
 	@PostMapping("/{id}/topUp")
 	boolean topUp(@PathVariable int id, @RequestParam double balance)
 	{
@@ -97,6 +127,10 @@ public class AccountController implements BasicGetController<Account> {
 		return false;
 	}
 
+	/**
+	 * Method yang akan melakukan enkripsi dengan metode MD5 terhadap password
+	 * @param input adalah password yang akan dienkripso
+	 */
 	public static String MD5enkrip(String input) throws NoSuchAlgorithmException{
 		try {
 			//Memanggil metgod getInstance dengan tipe MD5 untuk mengunakan algoritma MD5
@@ -127,17 +161,10 @@ public class AccountController implements BasicGetController<Account> {
 	@GetMapping
 	String index() { return "account page"; }
 
-//	@PostMapping("/register")
-//	Account register
-//			(
-//					@RequestParam String name,
-//					@RequestParam String email,
-//					@RequestParam String password
-//			)
-//	{
-//		return new Account(name, email, password, 0);
-//	}
-//
+	/**
+	 * Method yang akan mendapatkan informasi akun berdasarkan id
+	 * @param id adalah id akun
+	 */
 	@GetMapping("/{id}")
 	public Account getDataAccount(@PathVariable int id) { return getById(id); }
 }

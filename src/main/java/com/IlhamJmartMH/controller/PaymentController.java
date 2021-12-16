@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Class PaymentController yang akan mengatur seluruh aktivitas terkait payment
+ * @author Muhammad Ilham M S
+ * @version 16 Desember 2021
+ */
 @RestController
 @RequestMapping("/payment")
 public class PaymentController implements BasicGetController<Payment> {
@@ -27,17 +32,25 @@ public class PaymentController implements BasicGetController<Payment> {
         poolThread.start();
     }
 
+    /**
+     * Method getPaymentByAccountId untuk mengambil informasi payment berdasarkan id akun
+     * @param buyerId adalah id pembeli
+     */
     @GetMapping("/getByAccountId")
     public ArrayList<Payment> getPaymentByAccountId(@RequestParam int buyerId){
         ArrayList<Payment> paymentList = new ArrayList<>();
-        for(Payment p : paymentTable){
-            if(p.buyerId == buyerId){
-                paymentList.add(p);
+        for(Payment payment : paymentTable){
+            if(payment.buyerId == buyerId){
+                paymentList.add(payment);
             }
         }
         return paymentList;
     }
 
+    /**
+     * Method getPaymentByStoreId untuk mengambil informasi payment berdasarkan id store
+     * @param storeId adalah id store
+     */
     @GetMapping("/getByStoreId")
     public ArrayList<Payment> getPaymentByStoreId(@RequestParam int storeId){
         ArrayList<Payment> paymentList = new ArrayList<>();
@@ -49,6 +62,10 @@ public class PaymentController implements BasicGetController<Payment> {
         return paymentList;
     }
 
+    /**
+     * Method accept yang akan menerima proses pembelian berdasarkan id produk
+     * @param id adalah id payment
+     */
     @PostMapping("/{id}/accept")
     public boolean accept(@PathVariable int id) {
         Payment payment = null;
@@ -73,12 +90,16 @@ public class PaymentController implements BasicGetController<Payment> {
         return false;
     }
 
+    /**
+     * Method cancel yang akan menolak proses pembelian berdasarkan id produk
+     * @param id adalah id payment
+     */
     @PostMapping("/{id}/cancel")
     public boolean cancel (@PathVariable int id){
         Payment payment = null;
-        for(Payment p : paymentTable){
-            if(p.id == id){
-                payment = p;
+        for(Payment paymentTemp : paymentTable){
+            if(paymentTemp.id == id){
+                payment = paymentTemp;
             }
         }
         if(payment != null){
@@ -94,6 +115,15 @@ public class PaymentController implements BasicGetController<Payment> {
         return false;
     }
 
+    /**
+     * Method create yang yang akan membuat payment baru
+     * @param buyerId adalah id dari pembeli
+     * @param productId adalah id dari produk yang dibeli
+     * @param productCount adalah jumlah dari produk
+     * @param shipmentAddress adalah alamat dari pembeli
+     * @param shipmentPlan adalah jenis pengiriman dari produk
+     * @param storeId adalah id dari toko pemilik produk
+     */
     @PostMapping("/create")
     public Payment create(@RequestParam int buyerId, @RequestParam int productId, @RequestParam int productCount, @RequestParam String shipmentAddress, @RequestParam byte shipmentPlan,  @RequestParam int storeId) {
         Account account = null;
@@ -129,16 +159,24 @@ public class PaymentController implements BasicGetController<Payment> {
         return null;
     }
 
+    /**
+     * Method getJsonTable yang akan mengembalikan keseluruhan tabel payment
+     */
     public JsonTable<Payment> getJsonTable() {
         return paymentTable;
     }
 
+    /**
+     * Method submit yang akan memproses lanjut pembelian dan memasukan resi
+     * @param id adalah id dari payment
+     * @param receipt adalah resi dari pengiriman
+     */
     @PostMapping("/{id}/submit")
     public boolean submit(@PathVariable int id, @RequestParam String receipt){
         Payment payment = null;
-        for(Payment p : paymentTable){
-            if(p.id == id){
-                payment = p;
+        for(Payment paymentTemp : paymentTable){
+            if(paymentTemp.id == id){
+                payment = paymentTemp;
             }
         }
         if(payment != null){
@@ -156,6 +194,10 @@ public class PaymentController implements BasicGetController<Payment> {
         return false;
     }
 
+    /**
+     * Method timekeeper yang akan memproses jalannya proses pengiriman berdasarkan waktu
+     * @param payment adalah payment
+     */
     private static boolean timekeeper(Payment payment) {
         Date timeNow = Calendar.getInstance().getTime();
         if (payment.history.size() != 0) {
