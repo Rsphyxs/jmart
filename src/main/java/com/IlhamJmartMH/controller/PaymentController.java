@@ -38,6 +38,17 @@ public class PaymentController implements BasicGetController<Payment> {
         return paymentList;
     }
 
+    @GetMapping("/getByStoreId")
+    public ArrayList<Payment> getPaymentByStoreId(@RequestParam int storeId){
+        ArrayList<Payment> paymentList = new ArrayList<>();
+        for(Payment payment : paymentTable){
+            if(payment.storeId == storeId){
+                paymentList.add(payment);
+            }
+        }
+        return paymentList;
+    }
+
     @PostMapping("/{id}/accept")
     public boolean accept(@PathVariable int id) {
         Payment payment = null;
@@ -63,23 +74,20 @@ public class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping("/{id}/cancel")
-    public boolean cancel(@PathVariable int id) {
+    public boolean cancel (@PathVariable int id){
         Payment payment = null;
-
-        for (int i = 0; i < paymentTable.size(); i++) {
-            Payment paymentTemp = paymentTable.get(i);
-            if (paymentTemp.id == id) {
-                payment = paymentTemp;
+        for(Payment p : paymentTable){
+            if(p.id == id){
+                payment = p;
             }
         }
-
-        if (payment != null) {
+        if(payment != null){
             int size = payment.history.size();
             Payment.Record lastRecord = payment.history.get(size - 1);
-
-            if (lastRecord.status == Invoice.Status.WAITING_CONFIRMATION) {
-                Payment.Record record = new Payment.Record(Invoice.Status.CANCELLED, "Payment cancelled");
+            if(lastRecord.status == Invoice.Status.WAITING_CONFIRMATION){
+                Payment.Record record = new Payment.Record(Invoice.Status.CANCELLED, "Payment Cancelled");
                 payment.history.add(record);
+                poolThread.add(payment);
                 return true;
             }
         }
@@ -126,23 +134,22 @@ public class PaymentController implements BasicGetController<Payment> {
     }
 
     @PostMapping("/{id}/submit")
-    public boolean submit(@PathVariable int id, @RequestParam String receipt) {
+    public boolean submit(@PathVariable int id, @RequestParam String receipt){
         Payment payment = null;
-
-        for (int i = 0; i < paymentTable.size(); i++) {
-            Payment paymentTemp = paymentTable.get(i);
-            if (paymentTemp.id == id) {
-                payment = paymentTemp;
+        for(Payment p : paymentTable){
+            if(p.id == id){
+                payment = p;
             }
         }
-
-        if (payment != null) {
+        if(payment != null){
             int size = payment.history.size();
             Payment.Record lastRecord = payment.history.get(size - 1);
-            if (lastRecord.status == Invoice.Status.ON_PROGRESS && (!receipt.isBlank())) {
+            System.out.println(receipt);
+            if(lastRecord.status == Invoice.Status.ON_PROGRESS && (!receipt.isBlank())){
                 payment.shipment.receipt = receipt;
-                Payment.Record record = new Payment.Record(Invoice.Status.ON_DELIVERY, "On delivery");
+                Payment.Record record = new Payment.Record(Invoice.Status.ON_DELIVERY, "Payment Submitted");
                 payment.history.add(record);
+                poolThread.add(payment);
                 return true;
             }
         }
