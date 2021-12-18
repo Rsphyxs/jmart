@@ -4,6 +4,11 @@ import java.util.Vector;
 import java.lang.Object;
 import java.util.function.Function;
 
+/**
+ * Class Sebagai pengatur threading dalam aplikasi
+ * @author Muhammad Ilham M S
+ * @version 16 Desember 2021
+ */
 public class ObjectPoolThread <T> extends Thread{
     private boolean exitSignal;
     private Vector<T> objectPool = new Vector<T>();

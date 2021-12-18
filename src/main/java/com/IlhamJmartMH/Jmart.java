@@ -10,6 +10,11 @@ import com.google.gson.stream.JsonReader;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Class Jmart dimana spring dijalankan
+ * @author Muhammad Ilham M S
+ * @version 16 Desember 2021
+ */
 @SpringBootApplication
 public class Jmart {
 

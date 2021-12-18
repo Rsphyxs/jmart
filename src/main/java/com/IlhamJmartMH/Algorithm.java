@@ -2,6 +2,11 @@ package com.IlhamJmartMH;
 
 import java.util.*;
 
+/**
+ * Class Algorithm yang digunakan untuk melakukan berbagai macam algoritma
+ * @author Muhammad Ilham M S
+ * @version 16 Desember 2021
+ */
 public class Algorithm {
     private Algorithm() {
     }
@@ -264,6 +269,9 @@ public class Algorithm {
         return null;
     }
 
+    /**
+     *Method yang digunakan untuk mencari data menggunakan search
+     */
     public static <T> T find(Iterable<T> iterable, Predicate<T> pred){
         Iterator<T> iterator = iterable.iterator();
         while(iterator.hasNext()){
@@ -512,6 +520,11 @@ public class Algorithm {
         return tempList;
     }
 
+    /**
+     *Method untuk melakukan paginasi
+     * @param page sebagai halaman dari data yang akan ditampilkan
+     * @param pageSize sebagai besaran jumlah data perhalaman
+     */
     public static <T> List<T> paginate(Iterable<T> iterable, int page, int pageSize, Predicate<T> pred){
         List<T> tempList = new ArrayList<>();
         Iterator<T> iterator = iterable.iterator();
